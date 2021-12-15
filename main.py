@@ -1,2 +1,2 @@
-import euler.s037
+import euler.s114
 import math
