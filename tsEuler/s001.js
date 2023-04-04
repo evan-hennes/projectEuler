@@ -1,17 +1,15 @@
-var mults = [];
+var mults = new Set();
 var sum = 0;
 for (var i = 0; i < 1000; i += 3) {
-    mults.push(i);
+    mults.add(i);
 }
 for (var j = 0; j < 1000; j += 5) {
-    if (mults.includes(j)) {
+    if (mults.has(j)) {
         continue;
     }
     else {
-        mults.push(j);
+        mults.add(j);
     }
 }
-for (var n in mults) {
-    sum += mults[n];
-}
+mults.forEach(function (value) { return sum += value; });
 console.log(sum);
