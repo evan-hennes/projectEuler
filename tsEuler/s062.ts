@@ -12,24 +12,14 @@ const genCubeMap = (n : number) => {
         const curr = cube(i);
         const sorted = sortNum(curr.toString());
         if(cmap.has(sorted)){
-            const currSet = cmap.get(sorted)!;
-            currSet.add(curr);
-            cmap.set(sorted, currSet);
+            cmap.set(sorted, cmap.get(sorted)!.add(curr));
         }else{
-            const currSet = new Set<number>();
-            currSet.add(curr);
-            cmap.set(sorted, currSet); 
+            cmap.set(sorted, new Set<number>().add(curr)); 
         }
     }
-    const sets = new Set<Set<number>>();
     cmap.forEach((value : Set<number>) => {
-        if(value.size == 5) sets.add(value);
+        if(value.size == 5) console.log(Math.min(...value));
     });
-    const mins = new Set<number>();
-    sets.forEach((s : Set<number>) => {
-        mins.add(Math.min(...s));
-    });
-    console.log(Math.min(...mins));
 }
 
 genCubeMap(10000);
