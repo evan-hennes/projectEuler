@@ -22,3 +22,24 @@ const lfib = memoize((k : number) : number => {
     }
 });
 
+let numConnected = 0;
+let numSuccessful = 0;
+for(let i = 1; i <= 1000000; i++){
+    const caller = lfib(2 * i - 1);
+    const called = lfib(2 * i);
+    if(caller != called){
+        numSuccessful++;
+        if(caller == pmNum || called == pmNum){
+            numConnected++;
+            if(numConnected / numSuccessful == 0.99){
+                console.log("donezo");
+            }else{
+                console.log(numConnected / numSuccessful);
+            }
+        }else{
+            console.log('womp womp');
+        }
+    }else{
+        console.log("alpha cure mom");
+    }
+}
