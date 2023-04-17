@@ -1,5 +1,4 @@
-const callers = new Array<number>();
-const called = new Array<number>();
+const calls = new Map<number, Set<number>>();
 const pmNum = 524287;
 
 const memoize = <P,R>(fn: (param: P) => R): ((param: P) => R) => {
@@ -22,24 +21,26 @@ const lfib = memoize((k : number) : number => {
     }
 });
 
+const checkConnection = (conn : number, n : number) => {
+    
+}
+
 let numConnected = 0;
 let numSuccessful = 0;
 for(let i = 1; i <= 1000000; i++){
-    const caller = lfib(2 * i - 1);
+    const caller = lfib((2 * i) - 1);
     const called = lfib(2 * i);
-    if(caller != called){
-        numSuccessful++;
-        if(caller == pmNum || called == pmNum){
-            numConnected++;
-            if(numConnected / numSuccessful == 0.99){
-                console.log("donezo");
-            }else{
-                console.log(numConnected / numSuccessful);
-            }
-        }else{
-            console.log('womp womp');
-        }
+    if(caller === called){
+        console.log('misdial');
     }else{
-        console.log("alpha cure mom");
+        if(calls.has(caller)){
+            const arr = calls.get(caller)!.add(called);
+            calls.set(caller, arr);
+        }else{
+            const arr = new Set<number>();
+            arr.add(called);
+            calls.set(caller, arr);
+        }
     }
 }
+console.log('done');
