@@ -2,7 +2,7 @@ import { DisjointSetUnion, memoize } from "./useful.ts";
 
 const dsu = new DisjointSetUnion(1000000);
 const pmNum = 524287;
-let numConnected = 0;
+let numConnected = 1;
 let numSuccessful = 0;
 
 const lfib = memoize((k : number) : number => {
@@ -11,19 +11,23 @@ const lfib = memoize((k : number) : number => {
 });
 
 let i = 1;
-while(numConnected / numSuccessful != 0.99){
+while(numConnected / 1000000 < 0.99){
     const caller = lfib((2 * i) - 1);
     const called = lfib(2 * i);
     if(caller === called){
-        console.log('misdial');
+        i++;
+        continue; //misdial case; do nothing
     }else{
         numSuccessful++;
         dsu.union(caller, called);
-        if(i > 7000000){
+        const size = dsu.size[dsu.find(pmNum)];
+        if(size != numConnected){
+            numConnected = size;
+        }
+        if(numConnected / 1000000 >= 0.99){
             break;
         }
     }
     i++;
 }
-console.log(dsu.dsu);
-//console.log(dsu.size);
+console.log(numSuccessful);
