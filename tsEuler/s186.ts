@@ -1,8 +1,26 @@
-const calls = new Map<number, Set<number>>();
+const dsu = Array.from(Array<number>(1000000).keys());
 const pmNum = 524287;
-const connections = new Set<number>();
 let numConnected = 0;
 let numSuccessful = 0;
+
+const find = (n : number) : number => {
+    if(dsu[n] === n){
+        return n;
+    }
+    return dsu[n] = find(dsu[n]);
+}
+
+const union = (n1 : number, n2 : number) => {
+    const n1u = find(n1);
+    const n2u = find(n2);
+    if(n1u !== n2u){
+        dsu[n2u] = n1u;
+    }
+}
+
+const sameset = (n1 : number, n2 : number) : boolean => {
+    return find(n1) === find(n2);
+}
 
 const memoize = <P,R>(fn: (param: P) => R): ((param: P) => R) => {
     const cache = new Map<P, R>();
@@ -14,12 +32,7 @@ const lfib = memoize((k : number) : number => {
     return (lfib(k - 24) + lfib(k - 55)) % 1000000;
 });
 
-const checkConnections = (n : number) => {
-    return n;
-}
-
 let i = 1;
-let pmCaller = 0;
 while(numConnected / numSuccessful != 0.99){
     const caller = lfib((2 * i) - 1);
     const called = lfib(2 * i);
@@ -27,25 +40,7 @@ while(numConnected / numSuccessful != 0.99){
         console.log('misdial');
     }else{
         numSuccessful++;
-        if(calls.has(caller)){
-            const arr = calls.get(caller)!.add(called);
-            calls.set(caller, arr);
-        }else{
-            const arr = new Set<number>();
-            arr.add(called);
-            calls.set(caller, arr);
-        }
-        if(caller === pmNum || called === pmNum){
-            console.log('direct connection');
-            pmCaller = caller;
-            break;
-        }
+        
     }
     i++;
-    if(pmCaller != 0){
-        console.log(i);
-        break;
-    }
 }
-checkConnections(pmCaller);
-console.log(connections.size / numSuccessful);
