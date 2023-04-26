@@ -10,13 +10,15 @@ const lfib = memoize((k : number) : number => {
     return (lfib(k - 24) + lfib(k - 55)) % 1000000;
 });
 
+// treat network as graph; when call is made, create edge between nodes caller & called
+// represent this graph using dsu to easily & efficiently get size of component containing pmNum
 let i = 1;
 while(numConnected / 1000000 < 0.99){
     const caller = lfib((2 * i) - 1);
     const called = lfib(2 * i);
     if(caller === called){
         i++;
-        continue; //misdial case; do nothing
+        continue; // misdial case; do nothing
     }else{
         numSuccessful++;
         dsu.union(caller, called);

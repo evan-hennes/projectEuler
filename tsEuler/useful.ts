@@ -16,9 +16,10 @@ export class DisjointSetUnion {
     union = (n1 : number, n2 : number) => {
         const n1Parent = this.find(n1);
         const n2Parent = this.find(n2);
-        if(n1Parent == n2Parent){
+        if(n1Parent == n2Parent){ // n1 and n2 are parts of the same component; do nothing
             return;
         }
+        // merge based on size of component; smaller component is absorbed into the larger one
         if(this.size[n1Parent] >= this.size[n2Parent]){
             this.size[n1Parent] += this.size[n2Parent];
             this.dsu[n2Parent] = n1Parent;
@@ -35,6 +36,6 @@ export class DisjointSetUnion {
 
 // memoize function w/ one parameter of type P and return value of type R; big useful
 export const memoize = <P,R>(fn: (param: P) => R) : ((param: P) => R) => {
-    const cache = new Map<P, R>();
-    return (p : P) => {return(!cache.has(p) ? cache.set(p, fn(p)).get(p)! : cache.get(p)!);};
+    const cache = new Map<P, R>(); // cache will contain function results for a given parameter
+    return (p : P) => {return(!cache.has(p) ? cache.set(p, fn(p)).get(p)! : cache.get(p)!);}; // if cache does not have key p, set p as function result, else return cache[p]
 }
