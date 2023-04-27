@@ -39,3 +39,9 @@ export const memoize = <P,R>(fn: (param: P) => R) : ((param: P) => R) => {
     const cache = new Map<P, R>(); // cache will contain function results for a given parameter
     return (p : P) => {return(!cache.has(p) ? cache.set(p, fn(p)).get(p)! : cache.get(p)!);}; // if cache does not have key p, set p as function result, else return cache[p]
 }
+
+// memoized factorial function
+export const factorial = memoize((n : number) : number => {
+    if(n == 0) return 1;
+    return n * factorial(n - 1);
+});
