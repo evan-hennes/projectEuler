@@ -1,2 +1,1 @@
 
-const str = "XXXXXXXXXXXXXXXXXX";
