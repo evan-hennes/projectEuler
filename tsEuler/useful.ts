@@ -36,8 +36,9 @@ export class DisjointSetUnion {
 
 // memoize function w/ one parameter of type P and return value of type R; big useful
 export const memoize = <P,R>(fn: (param: P) => R) : ((param: P) => R) => {
-    const cache = new Map<P, R>(); // cache will contain function results for a given parameter
-    return (p : P) => {return(!cache.has(p) ? cache.set(p, fn(p)).get(p)! : cache.get(p)!);}; // if cache does not have key p, set p as function result, else return cache[p]
+    // parameter is converted to string to support params of type Array, Set, Map, etc.
+    const cache = new Map<string, R>(); // cache will contain function results for a given parameter
+    return (p : P) => {return(!cache.has(JSON.stringify(p)) ? cache.set(JSON.stringify(p), fn(p)).get(JSON.stringify(p))! : cache.get(JSON.stringify(p))!);}; // if cache does not have key p, set p as function result, else return cache[p]
 }
 
 // memoized factorial function
